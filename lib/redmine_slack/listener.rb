@@ -1,11 +1,25 @@
 require 'httpclient'
 
 class SlackListener < Redmine::Hook::Listener
+	# executers = {
+	# 		"Алексей Елисеев" => "#eliseev_aa"
+	# }
+
 	def controller_issues_new_after_save(context={})
+
+		$stdout = File.open('f_out.txt', 'w')
+
+		puts "context", context
+
 		issue = context[:issue]
+		puts "issue", issue
+
 
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
+
+		puts "channel", channel
+		puts "url", url
 
 		return unless channel and url
 
@@ -26,6 +40,11 @@ class SlackListener < Redmine::Hook::Listener
 			:value => escape(issue.assigned_to.to_s),
 			:short => true
 		}]
+
+		puts "attachment", attachment
+
+		puts "issue.assigned_to.class, issue.assigned_to.to_s"
+		puts issue.assigned_to.class, issue.assigned_to.to_s
 
 		speak msg, channel, attachment, url
 	end
