@@ -1,9 +1,9 @@
 require 'httpclient'
 
 class SlackListener < Redmine::Hook::Listener
-	# executers = {
-	# 		"Алексей Елисеев" => "#eliseev_aa"
-	# }
+	executers = {
+			"Алексей Елисеев" => "#eliseev_aa"
+	}
 
 	def controller_issues_new_after_save(context={})
 
@@ -45,6 +45,7 @@ class SlackListener < Redmine::Hook::Listener
 
 		puts "issue.assigned_to.class, issue.assigned_to.to_s"
 		puts issue.assigned_to.class, issue.assigned_to.to_s
+		puts "private chan", executers[issue.assigned_to.to_s]
 
 		speak msg, channel, attachment, url
 	end
