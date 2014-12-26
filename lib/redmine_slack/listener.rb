@@ -4,8 +4,8 @@ class SlackListener < Redmine::Hook::Listener
 
 	def controller_issues_new_after_save(context={})
 
-		$stdout = File.open('f_controller_issues_new_after_save.txt', 'w')
-
+		$stdout = File.open('f_controller_issues_new_after_save.txt', 'a')
+		$stderr = File.open('f_err_controller_issues_new_after_save.txt', 'a')
 		puts "context", context
 
 		issue = context[:issue]
@@ -50,7 +50,7 @@ class SlackListener < Redmine::Hook::Listener
 	def controller_issues_edit_after_save(context={})
 
 		$stdout = File.open('f_controller_issues_edit_after_save.txt', 'w')
-
+		$stderr = File.open('f_err_controller_issues_edit_after_save.txt', 'a')
 		puts context
 		issue = context[:issue]
 		journal = context[:journal]
