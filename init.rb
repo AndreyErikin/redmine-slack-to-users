@@ -1,12 +1,12 @@
 require 'redmine'
 
-require_dependency 'redmine_slack/listener'
+require_dependency 'redmine_slack_to_users/listener'
 
 Redmine::Plugin.register :redmine_slack do
-	name 'Redmine Slack To User'
+	name 'Redmine Slack To Users'
 	author 'com-k12'
-	url 'https://github.com/com-k12/redmine-slack'
-	author_url 'http://www.k12.ru'
+	url 'https://github.com/com-k12/redmine-slack-to-users'
+	author_url 'http://k12.ru'
 	description 'Slack chat integration'
 	version '0.1'
 
