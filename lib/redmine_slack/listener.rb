@@ -53,6 +53,7 @@ class SlackListener < Redmine::Hook::Listener
 		$stdout = File.open('f_controller_issues_edit_after_save.txt', 'w')
 		$stderr = File.open('f_err_controller_issues_edit_after_save.txt', 'a')
 		puts context
+		puts render_on(:view_my_account,:user => 15, :layout => false)
 		issue = context[:issue]
 		journal = context[:journal]
 
