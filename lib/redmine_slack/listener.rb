@@ -45,6 +45,7 @@ class SlackListener < Redmine::Hook::Listener
 		#puts "private chan", executers[issue.assigned_to.to_s]
 
 		speak msg, channel, attachment, url
+		speak msg, "@eliseev_aa", attachment, url
 	end
 
 	def controller_issues_edit_after_save(context={})
@@ -67,6 +68,7 @@ class SlackListener < Redmine::Hook::Listener
 		attachment[:fields] = journal.details.map { |d| detail_to_field d }
 
 		speak msg, channel, attachment, url
+		speak msg, "@eliseev_aa", attachment, url
 	end
 
 	def speak(msg, channel, attachment=nil, url=nil)
