@@ -1,4 +1,5 @@
 require 'httpclient'
+require 'active_resource'
 
 class SlackListener < Redmine::Hook::Listener
 
@@ -10,7 +11,6 @@ class SlackListener < Redmine::Hook::Listener
 
 		issue = context[:issue]
 		puts "issue", issue
-
 
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
@@ -42,7 +42,8 @@ class SlackListener < Redmine::Hook::Listener
 
 		puts "issue.assigned_to.class, issue.assigned_to.to_s"
 		puts issue.assigned_to.class, issue.assigned_to.to_s
-		#puts "private chan", executers[issue.assigned_to.to_s]
+		puts "issue.assigned_to.custom_fields"
+		puts issue.assigned_to.custom_fields
 
 		speak msg, channel, attachment, url
 		speak msg, "@eliseev_aa", attachment, url
@@ -50,10 +51,10 @@ class SlackListener < Redmine::Hook::Listener
 
 	def controller_issues_edit_after_save(context={})
 
-		$stdout = File.open('f_controller_issues_edit_after_save.txt', 'w')
+		$stdout = File.open('f_controller_issues_edit_after_save.txt', 'a')
 		$stderr = File.open('f_err_controller_issues_edit_after_save.txt', 'a')
 		puts context
-		# puts render_on(:view_my_account,:user => 15, :layout => false)
+		puts render_on(:view_my_account,:user => "15", :layout => false)
 		issue = context[:issue]
 		journal = context[:journal]
 
@@ -67,6 +68,9 @@ class SlackListener < Redmine::Hook::Listener
 		attachment = {}
 		attachment[:text] = escape journal.notes if journal.notes
 		attachment[:fields] = journal.details.map { |d| detail_to_field d }
+
+		puts "issue.assigned_to.custom_fields"
+		puts issue.assigned_to.custom_fields
 
 		speak msg, channel, attachment, url
 		speak msg, "@eliseev_aa", attachment, url
