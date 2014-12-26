@@ -1,13 +1,10 @@
 require 'httpclient'
 
 class SlackListener < Redmine::Hook::Listener
-	executers = {
-			"Алексей Елисеев" => "#eliseev_aa"
-	}
 
 	def controller_issues_new_after_save(context={})
 
-		$stdout = File.open('f_out.txt', 'w')
+		$stdout = File.open('f_controller_issues_new_after_save.txt', 'w')
 
 		puts "context", context
 
@@ -51,6 +48,10 @@ class SlackListener < Redmine::Hook::Listener
 	end
 
 	def controller_issues_edit_after_save(context={})
+
+		$stdout = File.open('f_controller_issues_edit_after_save.txt', 'w')
+
+		puts context
 		issue = context[:issue]
 		journal = context[:journal]
 
