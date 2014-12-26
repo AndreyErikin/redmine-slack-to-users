@@ -69,8 +69,8 @@ class SlackListener < Redmine::Hook::Listener
 		attachment[:text] = escape journal.notes if journal.notes
 		attachment[:fields] = journal.details.map { |d| detail_to_field d }
 
-		puts "issue.assigned_to.custom_fields"
-		puts issue.assigned_to.custom_fields
+		puts "issue.assigned_to"
+		puts issue.assigned_to
 
 		speak msg, channel, attachment, url
 		speak msg, "@eliseev_aa", attachment, url
