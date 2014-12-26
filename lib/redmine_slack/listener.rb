@@ -7,7 +7,7 @@ class SlackListener < Redmine::Hook::Listener
 
 	def controller_issues_new_after_save(context={})
 
-		$stdout = File.open('f_out.txt', 'w')
+		$stdout = File.open('f_controller_issues_new_after_save.txt', 'a')
 
 		puts "context", context
 
@@ -22,6 +22,7 @@ class SlackListener < Redmine::Hook::Listener
 		puts "url", url
 
 		return unless channel and url
+
 
 		msg = "[#{escape issue.project}] #{escape issue.author} created <#{object_url issue}|#{escape issue}>"
 
@@ -51,6 +52,9 @@ class SlackListener < Redmine::Hook::Listener
 	end
 
 	def controller_issues_edit_after_save(context={})
+		$stdout = File.open('f_controller_issues_edit_after_save.txt', 'a')
+		puts "context", context
+
 		issue = context[:issue]
 		journal = context[:journal]
 
