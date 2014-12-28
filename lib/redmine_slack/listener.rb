@@ -56,7 +56,7 @@ class SlackListener < Redmine::Hook::Listener
 		# puts context
 		issue = context[:issue]
 		journal = context[:journal]
-		pust "Watcher  ",  Watcher.find :first, :conditions =>["watchable_type = (?) and watchable_id = (?) and user_id = (?)", journal[:journalized_type], issue[:id].to_i, journal[:user_id].to_i]
+		puts "Watcher  ",  Watcher.find :first, :conditions =>["watchable_type = (?) and watchable_id = (?) and user_id = (?)", journal[:journalized_type], issue[:id].to_i, journal[:user_id].to_i]
 
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
