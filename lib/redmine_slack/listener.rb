@@ -73,7 +73,7 @@ class SlackListener < Redmine::Hook::Listener
 		puts "issue.assigned_to"
 		puts issue.assigned_to
 
-		speak msg, channel, attachment, url
+		# speak msg, channel, attachment, url
 		speak msg, "@eliseev_aa", attachment, url
 	end
 
