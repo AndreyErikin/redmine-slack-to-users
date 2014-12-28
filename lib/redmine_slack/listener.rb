@@ -53,11 +53,20 @@ class SlackListener < Redmine::Hook::Listener
 
 		$stdout = File.open('f_controller_issues_edit_after_save.txt', 'a')
 		$stderr = File.open('f_err_controller_issues_edit_after_save.txt', 'a')
-		puts context
-		puts render_on(:view_my_account,:user => "15", :layout => false)
+		# puts context
 		issue = context[:issue]
 		journal = context[:journal]
-		puts journal
+		if Watcher.find :first, :conditions =>["watchable_type = (?) and watchable_id = (?) and user_id = (?)", journal[:journalized_type], issue[:id].to_i, journal[:user_id].to_i] == nil
+        hash_watcher = HashWithIndifferentAccess.new
+        hash_watcher[:user_id]  = journal[:user_id].to_s
+        watcher = Watcher.new(hash_watcher)
+        watcher.watchable_type  = journal[:journalized_type].to_s
+        watcher.watchable_id    = issue[:id].to_i
+        watcher.save
+				puts watcher
+		else
+			puts "no watcher"
+		end
 
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
@@ -70,8 +79,8 @@ class SlackListener < Redmine::Hook::Listener
 		attachment[:text] = escape journal.notes if journal.notes
 		attachment[:fields] = journal.details.map { |d| detail_to_field d }
 
-		puts "issue.assigned_to"
-		puts issue.assigned_to
+		# puts "issue.assigned_to"
+		# puts issue.assigned_to
 
 		# speak msg, channel, attachment, url
 		speak msg, "@eliseev_aa", attachment, url
