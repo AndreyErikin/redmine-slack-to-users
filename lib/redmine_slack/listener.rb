@@ -57,6 +57,7 @@ class SlackListener < Redmine::Hook::Listener
 		puts render_on(:view_my_account,:user => "15", :layout => false)
 		issue = context[:issue]
 		journal = context[:journal]
+		puts journal
 
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
