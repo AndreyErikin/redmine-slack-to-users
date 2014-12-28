@@ -56,18 +56,8 @@ class SlackListener < Redmine::Hook::Listener
 		# puts context
 		issue = context[:issue]
 		journal = context[:journal]
-		if Watcher.find :first, :conditions =>["watchable_type = (?) and watchable_id = (?) and user_id = (?)", journal[:journalized_type], issue[:id].to_i, journal[:user_id].to_i] == nil
-        hash_watcher = HashWithIndifferentAccess.new
-        hash_watcher[:user_id]  = journal[:user_id].to_s
-        watcher = Watcher.new(hash_watcher)
-        watcher.watchable_type  = journal[:journalized_type].to_s
-        watcher.watchable_id    = issue[:id].to_i
-        watcher.save
-				puts watcher
-		else
-			puts "no watcher"
-		end
-		puts "watcherwatcherwatcherwatcher watcher"
+		pust "Watcher  ",  Watcher.find :first, :conditions =>["watchable_type = (?) and watchable_id = (?) and user_id = (?)", journal[:journalized_type], issue[:id].to_i, journal[:user_id].to_i]
+
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
 
