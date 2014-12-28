@@ -7,16 +7,16 @@ class SlackListener < Redmine::Hook::Listener
 
 		$stdout = File.open('f_controller_issues_new_after_save.txt', 'a')
 		$stderr = File.open('f_err_controller_issues_new_after_save.txt', 'a')
-		puts "context", context
+		# puts "context", context
 
 		issue = context[:issue]
-		puts "issue", issue
+		# puts "issue", issue
 
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
 
-		puts "channel", channel
-		puts "url", url
+		# puts "channel", channel
+		# puts "url", url
 
 		return unless channel and url
 
@@ -38,12 +38,12 @@ class SlackListener < Redmine::Hook::Listener
 			:short => true
 		}]
 
-		puts "attachment", attachment
-
-		puts "issue.assigned_to.class, issue.assigned_to.to_s"
-		puts issue.assigned_to.class, issue.assigned_to.to_s
-		puts "issue.assigned_to.custom_fields"
-		puts issue.assigned_to.custom_fields
+		# puts "attachment", attachment
+    #
+    # puts "issue.assigned_to.class, issue.assigned_to.to_s"
+    # puts issue.assigned_to.class, issue.assigned_to.to_s
+    # puts "issue.assigned_to.custom_fields"
+    # puts issue.assigned_to.custom_fields
 
 		speak msg, channel, attachment, url
 		speak msg, "@eliseev_aa", attachment, url
@@ -53,12 +53,12 @@ class SlackListener < Redmine::Hook::Listener
 
 		$stdout = File.open('f_controller_issues_edit_after_save.txt', 'a')
 		$stderr = File.open('f_err_controller_issues_edit_after_save.txt', 'a')
-		# puts context
+		puts context
 		issue = context[:issue]
 		journal = context[:journal]
-		puts "get watchers..."
-		watchers = context[:watchers]
-		puts "watchers", watchers
+		# puts "get watchers..."
+		# watchers = context[:watchers]
+		# puts "watchers", watchers
 
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
