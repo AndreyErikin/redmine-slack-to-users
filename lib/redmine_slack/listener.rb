@@ -76,7 +76,17 @@ class SlackListener < Redmine::Hook::Listener
 
 			slack_users.push(cv.value)
 		end
-		slack_users.map{|user| (speak msg, user, attachment, url)}
+
+		# slack_users.map{|user| (speak msg, user, attachment, url)}
+
+		threads = []
+		for user in slack_users
+				threads << Thread.new(user) do |user|
+						speak msg, user, attachment, url
+				end
+		end
+		threads.each {|thr| thr.join }
+
 	end
 
 	def speak(msg, channel, attachment=nil, url=nil)
