@@ -59,7 +59,7 @@ class SlackListener < Redmine::Hook::Listener
 
 
 		puts "get watchers..."
-		watchers = journal.notified_watchers
+		watchers = issue.notified_users
 		puts "watchers", watchers
 
 		channel = channel_for_project issue.project
