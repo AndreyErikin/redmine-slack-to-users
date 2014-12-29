@@ -7,16 +7,11 @@ class SlackListener < Redmine::Hook::Listener
 
 		$stdout = File.open('f_controller_issues_new_after_save.txt', 'a')
 		$stderr = File.open('f_err_controller_issues_new_after_save.txt', 'a')
-		# puts "context", context
 
 		issue = context[:issue]
-		# puts "issue", issue
 
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
-
-		# puts "channel", channel
-		# puts "url", url
 
 		return unless channel and url
 
@@ -38,15 +33,17 @@ class SlackListener < Redmine::Hook::Listener
 			:short => true
 		}]
 
-		# puts "attachment", attachment
-    #
-    # puts "issue.assigned_to.class, issue.assigned_to.to_s"
-    # puts issue.assigned_to.class, issue.assigned_to.to_s
-    # puts "issue.assigned_to.custom_fields"
-    # puts issue.assigned_to.custom_fields
+		watchers = issue.recipients
+		slack_users = []
+		for mail in watchers
+			cv = User.find_by_mail(mail).custom_value_for(2)
+			puts cv, cv.class
+			next unless cv
 
-		speak msg, channel, attachment, url
-		speak msg, "@eliseev_aa", attachment, url
+			slack_users.push(cv.value)
+		end
+		slack_users.map{|user| (speak msg, user, attachment, url)}
+
 	end
 
 	def controller_issues_edit_after_save(context={})
@@ -56,8 +53,6 @@ class SlackListener < Redmine::Hook::Listener
 
 		issue = context[:issue]
 		journal = context[:journal]
-		watchers = issue.recipients | journal.watcher_recipients
-		p watchers
 
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
@@ -70,11 +65,7 @@ class SlackListener < Redmine::Hook::Listener
 		attachment[:text] = escape journal.notes if journal.notes
 		attachment[:fields] = journal.details.map { |d| detail_to_field d }
 
-		# puts "issue.assigned_to"
-		# puts issue.assigned_to
-
-		# speak msg, channel, attachment, url
-
+		watchers = issue.recipients | journal.watcher_recipients
 		slack_users = []
 		for mail in watchers
 			cv = User.find_by_mail(mail).custom_value_for(2)
@@ -83,12 +74,7 @@ class SlackListener < Redmine::Hook::Listener
 
 			slack_users.push(cv.value)
 		end
-		p slack_users
-		# watchers.map{|user| (speak msg, User.find_by_mail(user).custom_value_for(2).value, attachment, url)}
-
 		slack_users.map{|user| (speak msg, user, attachment, url)}
-		# speak msg, User.find_by_mail(watchers1[0]).custom_value_for(2).value, attachment, url
-		# speak msg, User.find_by_mail(watchers1[1]).custom_value_for(2).value, attachment, url
 	end
 
 	def speak(msg, channel, attachment=nil, url=nil)
