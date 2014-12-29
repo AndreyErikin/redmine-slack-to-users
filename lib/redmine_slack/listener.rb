@@ -62,7 +62,7 @@ class SlackListener < Redmine::Hook::Listener
 		watchers2 = journal.watcher_recipients
 		puts "watchers", watchers1, watchers2
 		puts ".find_by_mail ", User.find_by_mail(watchers1[0])
-		puts ".find_by_mail ", User.find_by_mail(watchers1[1]).custom_value_for(1)
+		puts ".find_by_mail ", User.find_by_mail(watchers1[1]).custom_value_for(2).value
 
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
