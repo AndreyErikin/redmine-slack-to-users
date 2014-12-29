@@ -81,8 +81,9 @@ class SlackListener < Redmine::Hook::Listener
 			slack_users.push(cv.value)
 		end
 		puts "Get users", Time.now.to_i - st
+
+		st = Time.now.to_i
 		slack_users.map{|user| (speak msg, user, attachment, url)}
-		# st = Time.now.to_i
 		# threads = []
 		# for user in slack_users
 		# 		threads << Thread.new(user) do |user|
