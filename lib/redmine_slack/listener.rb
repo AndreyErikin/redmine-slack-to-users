@@ -34,7 +34,8 @@ class SlackListener < Redmine::Hook::Listener
 		}]
 
 		watchers = issue.recipients
-		# puts "current journal", issue.current_journal.watcher_recipients,issue.current_journal.watcher_recipients.class
+		j = issue.current_journal
+		puts "current journal", j, j.class
 		slack_users = []
 		for mail in watchers
 			cv = User.find_by_mail(mail).custom_value_for(2)
