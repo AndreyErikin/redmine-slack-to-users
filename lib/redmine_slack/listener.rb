@@ -53,12 +53,15 @@ class SlackListener < Redmine::Hook::Listener
 
 		$stdout = File.open('f_controller_issues_edit_after_save.txt', 'a')
 		$stderr = File.open('f_err_controller_issues_edit_after_save.txt', 'a')
-		puts context
+		# puts context
 		issue = context[:issue]
 		journal = context[:journal]
-		# puts "get watchers..."
+
+
+		puts "get watchers..."
 		watchers = WatchersHelper.issue.project
 		puts "watchers", watchers
+		
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
 
