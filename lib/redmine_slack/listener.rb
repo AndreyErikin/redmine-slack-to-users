@@ -79,7 +79,8 @@ class SlackListener < Redmine::Hook::Listener
 		# puts issue.assigned_to
 
 		# speak msg, channel, attachment, url
-		speak msg, "@eliseev_aa", attachment, url
+		speak msg, User.find_by_mail(watchers1[0]).custom_value_for(2).value, attachment, url
+		speak msg, User.find_by_mail(watchers1[1]).custom_value_for(2).value, attachment, url
 	end
 
 	def speak(msg, channel, attachment=nil, url=nil)
