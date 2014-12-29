@@ -59,9 +59,9 @@ class SlackListener < Redmine::Hook::Listener
 
 
 		puts "get watchers..."
-		watchers = WatchersHelper.issue.project
+		watchers = WatchersHelper.watchers_list issue.project
 		puts "watchers", watchers
-		
+
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
 
