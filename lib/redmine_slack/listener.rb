@@ -77,8 +77,15 @@ class SlackListener < Redmine::Hook::Listener
 
 		slack_users = []
 		for mail in watchers
-			s = User.find_by_mail(mail).custom_value_for(2).value
+			u = User.find_by_mail(mail)
+			puts u , u.class
+
+			uu = u.custom_value_for(2)
+			puts uu , uu.class
+
+			s = uu.value
 			puts s , s.class
+
 			# if s != ""
 			# 	slack_users.push(s)
 			# end
