@@ -53,17 +53,11 @@ class SlackListener < Redmine::Hook::Listener
 
 		$stdout = File.open('f_controller_issues_edit_after_save.txt', 'a')
 		$stderr = File.open('f_err_controller_issues_edit_after_save.txt', 'a')
-		# puts context
+
 		issue = context[:issue]
 		journal = context[:journal]
+		watchers = issue.recipients | journal.watcher_recipients
 
-		puts "get watchers..."
-		watchers1 = issue.recipients
-		watchers2 = journal.watcher_recipients
-		puts "watchers", watchers1, watchers2
-		puts ".find_by_mail ", User.find_by_mail(watchers1[0]).custom_value_for(2).value
-		puts ".find_by_mail ", User.find_by_mail(watchers1[1]).custom_value_for(2).value
-		puts "end"
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
 
@@ -79,8 +73,10 @@ class SlackListener < Redmine::Hook::Listener
 		# puts issue.assigned_to
 
 		# speak msg, channel, attachment, url
-		speak msg, User.find_by_mail(watchers1[0]).custom_value_for(2).value, attachment, url
-		speak msg, User.find_by_mail(watchers1[1]).custom_value_for(2).value, attachment, url
+		
+		watchers.map{|user| (speak msg, User.find_by_mail(user).custom_value_for(2).value, attachment, url)}
+		# speak msg, User.find_by_mail(watchers1[0]).custom_value_for(2).value, attachment, url
+		# speak msg, User.find_by_mail(watchers1[1]).custom_value_for(2).value, attachment, url
 	end
 
 	def speak(msg, channel, attachment=nil, url=nil)
