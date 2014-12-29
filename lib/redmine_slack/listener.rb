@@ -79,7 +79,7 @@ class SlackListener < Redmine::Hook::Listener
 		for mail in watchers
 			cv = User.find_by_mail(mail).custom_value_for(2)
 			if cv.class == NilClass
-				continue
+				next
 			end
 
 			if s != ""
