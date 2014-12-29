@@ -79,9 +79,8 @@ class SlackListener < Redmine::Hook::Listener
 		for mail in watchers
 			cv = User.find_by_mail(mail).custom_value_for(2)
 			puts cv, cv.class
-			# if cv != nil
-			# 	slack_users.push(cv.value)
-			# end
+			next unless cv
+
 			slack_users.push(cv.value)
 		end
 		p slack_users
