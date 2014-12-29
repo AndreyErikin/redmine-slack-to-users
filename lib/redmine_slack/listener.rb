@@ -33,41 +33,32 @@ class SlackListener < Redmine::Hook::Listener
 			:short => true
 		}]
 
-		watchers = issue.recipients
-		# j = issue.current_journal
-		# puts "current journal", j, j.class
 		slack_users = []
-		for mail in watchers
+		for mail in issue.recipients
 			cv = User.find_by_mail(mail).custom_value_for(2)
 			puts cv, cv.class
 			next unless cv
 
 			slack_users.push(cv.value)
 		end
+
 		slack_users.map{|user| (speak msg, user, attachment, url)}
 
 	end
 
 	def controller_issues_edit_after_save(context={})
-		# st = Time.now.to_i
-		$stdout = File.open('f_controller_issues_edit_after_save.txt', 'a')
-		$stderr = File.open('f_err_controller_issues_edit_after_save.txt', 'a')
-		# puts "Open files", Time.now.to_i - st
-		# st = Time.now.to_i
 		issue = context[:issue]
 		journal = context[:journal]
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
 		return unless channel and url
-		# puts "Get issue, journal, url, channel", Time.now.to_i - st
-		# st = Time.now.to_i
 		msg = "[#{escape issue.project}] #{escape journal.user.to_s} updated <#{object_url issue}|#{escape issue}>"
 
 		attachment = {}
 		attachment[:text] = escape journal.notes if journal.notes
 		attachment[:fields] = journal.details.map { |d| detail_to_field d }
-		# puts "Form msg", Time.now.to_i - st
-		# st = Time.now.to_i
+
+		# get watchers ...
 		watchers = issue.recipients | journal.watcher_recipients
 		slack_users = []
 		for mail in watchers
@@ -77,17 +68,8 @@ class SlackListener < Redmine::Hook::Listener
 
 			slack_users.push(cv.value)
 		end
-		# puts "Get users", Time.now.to_i - st
-		# st = Time.now.to_i
+
 		slack_users.map{|user| (speak msg, user, attachment, url)}
-		# threads = []
-		# for user in slack_users
-		# 		threads << Thread.new(user) do |user|
-		# 				speak msg, user, attachment, url
-		# 		end
-		# end
-		# threads.each {|thr| thr.join }
-		# puts "SEND", Time.now.to_i - st
 	end
 
 	def speak(msg, channel, attachment=nil, url=nil)
