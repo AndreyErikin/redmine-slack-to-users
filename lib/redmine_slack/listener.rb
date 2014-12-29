@@ -33,7 +33,7 @@ class SlackListener < Redmine::Hook::Listener
 			:short => true
 		}]
 
-		watchers = issue.recipients
+		watchers = issue.recipients | issue.current_journal.recipients
 		slack_users = []
 		for mail in watchers
 			cv = User.find_by_mail(mail).custom_value_for(2)
