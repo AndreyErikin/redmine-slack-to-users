@@ -57,7 +57,8 @@ class SlackListener < Redmine::Hook::Listener
 		issue = context[:issue]
 		journal = context[:journal]
 		watchers = issue.recipients | journal.watcher_recipients
-
+		p watchers
+		
 		channel = channel_for_project issue.project
 		url = url_for_project issue.project
 
@@ -73,7 +74,7 @@ class SlackListener < Redmine::Hook::Listener
 		# puts issue.assigned_to
 
 		# speak msg, channel, attachment, url
-		
+
 		watchers.map{|user| (speak msg, User.find_by_mail(user).custom_value_for(2).value, attachment, url)}
 		# speak msg, User.find_by_mail(watchers1[0]).custom_value_for(2).value, attachment, url
 		# speak msg, User.find_by_mail(watchers1[1]).custom_value_for(2).value, attachment, url
