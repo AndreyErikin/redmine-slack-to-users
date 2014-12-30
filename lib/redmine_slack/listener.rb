@@ -47,6 +47,8 @@ class SlackListener < Redmine::Hook::Listener
 	end
 
 	def controller_issues_edit_after_save(context={})
+		$stdout = File.open('f_controller_issues_edit_after_save.txt', 'a')
+
 		issue = context[:issue]
 		journal = context[:journal]
 		channel = channel_for_project issue.project
@@ -68,7 +70,7 @@ class SlackListener < Redmine::Hook::Listener
 
 			slack_users.push(cv.value)
 		end
-
+		puts watchers, slack_users
 		slack_users.map{|user| (speak msg, user, attachment, url)}
 	end
 
