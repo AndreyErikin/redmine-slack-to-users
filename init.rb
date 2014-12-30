@@ -8,7 +8,7 @@ Redmine::Plugin.register :redmine_slack do
 	url 'https://github.com/com-k12/redmine-slack-to-users'
 	author_url 'http://k12.ru'
 	description 'Slack chat integration'
-	version '0.1'
+	version '1.0'
 
 	requires_redmine :version_or_higher => '0.8.0'
 
