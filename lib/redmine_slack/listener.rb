@@ -62,6 +62,7 @@ class SlackListener < Redmine::Hook::Listener
 
 		# get watchers ...
 		watchers = issue.recipients | journal.watcher_recipients
+		watchers.delete(journal.user)
 		slack_users = []
 		for mail in watchers
 			cv = User.find_by_mail(mail).custom_value_for(2)
@@ -72,7 +73,6 @@ class SlackListener < Redmine::Hook::Listener
 		end
 		puts watchers, slack_users
 		puts journal.user
-		slack_users.delete(journal.user)
 		slack_users.map{|user| (speak msg, user, attachment, url)}
 	end
 
