@@ -71,7 +71,8 @@ class SlackListener < Redmine::Hook::Listener
 			slack_users.push(cv.value)
 		end
 		puts watchers, slack_users
-		slack_users.delete(journal.user.to_s)
+		puts journal.user
+		slack_users.delete(journal.user)
 		slack_users.map{|user| (speak msg, user, attachment, url)}
 	end
 
