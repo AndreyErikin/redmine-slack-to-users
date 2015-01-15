@@ -62,8 +62,10 @@ class SlackListener < Redmine::Hook::Listener
 
 		# get watchers ...
 		watchers = issue.recipients | journal.notified_watchers
+		p "journal.notified_users", journal.notified_users
+		p "journal.recipients", journal.recipients
 		p "journal.notified_watchers", journal.notified_watchers
-		p "issue.recipients", issue.recipients
+		p "journal.watcher_recipients", journal.watcher_recipients
 		# p "Mailer", issue_edit(journal)
 
 		puts ""
