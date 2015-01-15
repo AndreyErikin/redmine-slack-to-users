@@ -78,15 +78,13 @@ class SlackListener < Redmine::Hook::Listener
 
 		p "new_watchers", watchers
 
-		# puts ""
-		# slack_users = []
-		# for mail in watchers
-		# 	cv = User.find_by_mail(mail).custom_value_for(2)
-		# 	next unless cv
-    #
-		# 	slack_users.push(cv.value)
-		# end
-		# p watchers, slack_users
+		slack_users = []
+		for user in watchers
+			cv = User.find_by_mail(user[:mail]).custom_value_for(2)
+			next unless cv
+			slack_users.push(cv.value)
+		end
+		p watchers, slack_users
 		slack_users.map{|user| (speak msg, user, attachment, url)}
 	end
 
