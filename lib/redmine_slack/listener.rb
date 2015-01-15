@@ -61,8 +61,12 @@ class SlackListener < Redmine::Hook::Listener
 		attachment[:fields] = journal.details.map { |d| detail_to_field d }
 
 		# get watchers ...
-		watchers = issue.recipients | journal.watcher_recipients
-		watchers.delete(journal.user)
+		watchers = issue.recipients | journal.notified_watchers
+		put "journal.notified_watchers", journal.notified_watchers
+		put "journal.watcher_recipients", watcher_recipients
+		put "User.current.notify_about?", User.current, User.current.notify_about?(issue)
+
+		puts ""
 		slack_users = []
 		for mail in watchers
 			cv = User.find_by_mail(mail).custom_value_for(2)
@@ -72,7 +76,6 @@ class SlackListener < Redmine::Hook::Listener
 			slack_users.push(cv.value)
 		end
 		puts watchers, slack_users
-		puts journal.user
 		slack_users.map{|user| (speak msg, user, attachment, url)}
 	end
 
