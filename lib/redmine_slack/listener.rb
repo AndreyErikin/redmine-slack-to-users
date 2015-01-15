@@ -65,19 +65,15 @@ class SlackListener < Redmine::Hook::Listener
 		to = journal.notified_users
     cc = journal.notified_watchers
 		watchers = to | cc
-		p "wathers", watchers
+		# p "wathers", watchers
 		# watchers.map{|user| p user, user.pref.no_self_notified}
-
 		cu = User.current
-		p "cu", cu
-		p "cu.pref.no_self_notified", cu.pref.no_self_notified
-
+		# p "cu", cu
+		# p "cu.pref.no_self_notified", cu.pref.no_self_notified
 		if cu.pref.no_self_notified == true then
 			watchers.delete(cu)
 		end
-
-		p "new_watchers", watchers
-
+		# p "new_watchers", watchers
 		slack_users = []
 		for user in watchers
 			cv = User.find_by_mail(user[:mail]).custom_value_for(2)
