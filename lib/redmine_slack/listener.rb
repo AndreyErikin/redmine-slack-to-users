@@ -71,17 +71,8 @@ class SlackListener < Redmine::Hook::Listener
 		to = journal.notified_users
     cc = journal.notified_watchers
 
-		p "to", to
-		p "cc", cc
+		(to + cc).map{|user| p "user", user.pref.no_self_notified}
 
-		journal.each_notification(to + cc) do |users|
-			p "users ", users
-    	issue.each_notification(users) do |users2|
-			p "users2 ", users2
-      p "to & users2", to & users2
-			p "cc & users2", cc & users2
-     end
-		end
 
 		puts ""
 		slack_users = []
