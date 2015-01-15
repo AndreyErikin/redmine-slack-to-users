@@ -64,7 +64,7 @@ class SlackListener < Redmine::Hook::Listener
 		watchers = issue.recipients | journal.notified_watchers
 		p "journal.notified_watchers", journal.notified_watchers
 		p "issue.recipients", issue.recipients
-		p "User.current.notify_about?", User.current, User.current.valid_notification_options
+		p "User.current.notify_about?", User.current, User.current.set_mail_notification
 
 		puts ""
 		slack_users = []
