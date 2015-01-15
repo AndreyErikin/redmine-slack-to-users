@@ -61,17 +61,16 @@ class SlackListener < Redmine::Hook::Listener
 		attachment[:fields] = journal.details.map { |d| detail_to_field d }
 
 		# get watchers ...
-		watchers = issue.recipients | journal.notified_watchers
-		# p "journal.notified_users", journal.notified_users
-		# p "journal.recipients", journal.recipients
-		# p "journal.notified_watchers", journal.notified_watchers
-		# p "journal.watcher_recipients", journal.watcher_recipients
-		# p "Mailer", issue_edit(journal)
-
+		# watchers = issue.recipients | journal.notified_watchers
 		to = journal.notified_users
     cc = journal.notified_watchers
+		watchers = to | cc
+		# watchers.map{|user| p user, user.pref.no_self_notified}
 
-		(to + cc).map{|user| p user, user.pref.no_self_notified}
+		cu = User.current
+		if cu.pref.no_self_notified == true then
+			watchers.delete(cu)
+		end
 
 
 		puts ""
