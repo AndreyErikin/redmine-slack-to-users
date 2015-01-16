@@ -35,6 +35,7 @@ class SlackListener < Redmine::Hook::Listener
 		slack_users = []
 
 		journal = issue.current_journal
+		p "journal", journal
 
 		if journal != nil then
 
