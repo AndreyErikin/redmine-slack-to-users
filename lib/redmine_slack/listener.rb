@@ -33,11 +33,17 @@ class SlackListener < Redmine::Hook::Listener
 		}]
 
 		slack_users = []
-		for mail in issue.recipients
+		recipients = issue.recipients
+
+		cu = User.current
+		if cu.pref.no_self_notified == false then
+				recipients.delete(cu[:mail])
+		end
+
+		for mail in recipients
 			cv = User.find_by_mail(mail).custom_value_for(2)
 			puts cv, cv.class
 			next unless cv
-
 			slack_users.push(cv.value)
 		end
 
